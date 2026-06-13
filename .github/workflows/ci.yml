@@ -1,6 +1,5 @@
 name: Next.js CI Sandbox 🤖
 
-# 🏁 สั่งให้หุ่นยนต์ทำงานเมื่อไหร่?
 on:
   push:
     branches:
@@ -12,49 +11,34 @@ on:
       - main
       - uat
       - dev
-      
+
 jobs:
   test-and-verify:
-    runs-on: ubuntu-latest # ให้หุ่นยนต์ทำงานบนเครื่องเซิร์ฟเวอร์ Ubuntu ของ GitHub
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. ให้หุ่นยนต์ดึงโค้ดจาก Repo ของเราไปกางออก
+      # 1. ดึงโค้ดลงเครื่องหุ่นยนต์
       - name: Checkout Code 📑
         uses: actions/checkout@v4
 
-      # 2. ติดตั้ง Node.js เวอร์ชัน 20 ให้ตรงกับตู้ Docker ของเรา
+      # 2. ตั้งค่า Node.js 20
       - name: Setup Node.js 20 🟢
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 3. ติดตั้ง pnpm ตัวโปรดของโอ๊ตลงเครื่องหุ่นยนต์
+      # 3. ตั้งค่า pnpm เวอร์ชัน 9
       - name: Setup pnpm 📦
         uses: pnpm/action-setup@v3
         with:
-          version: 9 # หรือเวอร์ชันที่โอ๊ตใช้งานอยู่ ระบบจะดึงให้เอง
-          run_install: false
+          version: 9
 
-      # 4. ทำระบบจำแคช (Cache) เพื่อให้รอบหน้าหุ่นยนต์ติดตั้ง pnpm install ไวขึ้นไม่เปลืองเน็ต
-      - name: Get pnpm store directory 💾
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Cache pnpm modules 🗄️
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      # 5. สั่งให้หุ่นยนต์รันติดตั้ง Node Modules ข้างในเว็บ
+      # 4. ติดตั้ง Node Modules (วิ่งตรงเข้าโฟลเดอร์ web)
       - name: Install Dependencies 🛠️
         run: pnpm install
-        working-directory: ./web # ระบุโฟลเดอร์ที่โค้ดเว็บเราตั้งอยู่
+        working-directory: ./web
 
-      # 6. วินาทีตัดสิน! สั่งให้หุ่นยนต์รันระบบตรวจเทส Vitest อัตโนมัติ
+      # 5. วินาทีตัดเชือก รันเทส Vitest อัตโนมัติ
       - name: Run Automated Tests 🧪
         run: pnpm test
         working-directory: ./web
