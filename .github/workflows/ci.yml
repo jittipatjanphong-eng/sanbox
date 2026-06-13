@@ -3,10 +3,16 @@ name: Next.js CI Sandbox 🤖
 # 🏁 สั่งให้หุ่นยนต์ทำงานเมื่อไหร่?
 on:
   push:
-    branches: [ main, master, develop ] # เมื่อมีการ push โค้ดเข้าสาขาเหล่านี้
+    branches:
+      - main
+      - uat
+      - dev
   pull_request:
-    branches: [ main, master, develop ] # หรือเมื่อมีคนสร้าง PR เปิดขอรวมโค้ด
-
+    branches:
+      - main
+      - uat
+      - dev
+      
 jobs:
   test-and-verify:
     runs-on: ubuntu-latest # ให้หุ่นยนต์ทำงานบนเครื่องเซิร์ฟเวอร์ Ubuntu ของ GitHub
