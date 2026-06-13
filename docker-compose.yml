@@ -4,9 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./:/app
       - /app/node_modules
-    enviroment:
+    environment:
       - WATCHPACK_POLLING=true
