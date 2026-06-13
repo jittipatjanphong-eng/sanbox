@@ -33,12 +33,10 @@ jobs:
         with:
           version: 9
 
-      # 4. ติดตั้ง Node Modules (วิ่งตรงเข้าโฟลเดอร์ web)
+      # 4. ติดตั้ง Node Modules (รันตรงจุดที่เจอ package.json ได้เลย)
       - name: Install Dependencies 🛠️
         run: pnpm install
-        working-directory: ./web
 
       # 5. วินาทีตัดเชือก รันเทส Vitest อัตโนมัติ
       - name: Run Automated Tests 🧪
         run: pnpm test
-        working-directory: ./web
